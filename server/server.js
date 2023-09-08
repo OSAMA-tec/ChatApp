@@ -3,24 +3,24 @@ const express = require('express');
 const cors = require('cors');
 const {Server} = require('socket.io');
 const http=require("http")
+const app=express()
 app.use(cors());
 const port = 3000;
 
-const app=express()
 
 const server=http.createServer(app)
 const io=new Server(server,{
     cors:{
-        origin:"*",
+        origin:"http://localhost:5173",
         "methods":["GET","POST","DELETE","PUT"]
     }
 })
 
 io.on("connection",(socket)=>{
-    console.log(socket.io);
+    console.log("User Connected",socket.id);
 
-    socket.io("disconnect",()=>{
-        console.log("User Disconnected",socket.io)
+    socket.on("disconnect",()=>{
+        console.log("User Disconnected",socket.id)
     })
 })
 
